@@ -1,0 +1,55 @@
+{
+  "2": {
+    "inputs": {
+      "image": "6e431fba0bc7638bdbbae5677e847a544bfd1bdc682f8b4863a5b6614d2e2100.jpg"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "4": {
+    "inputs": {
+      "model": "insightface",
+      "crop_width": 2000,
+      "crop_height": 2000,
+      "image": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "ACE_ImageFaceCrop",
+    "_meta": {
+      "title": "🅐 Image Face Crop"
+    }
+  },
+  "5": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "6": {
+    "inputs": {
+      "facedetection": "retinaface_resnet50",
+      "model": "GFPGANv1.4.pth",
+      "visibility": 0.8000000000000002,
+      "codeformer_weight": 0.30000000000000004,
+      "image": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "ReActorRestoreFace",
+    "_meta": {
+      "title": "Restore Face 🌌 ReActor"
+    }
+  }
+}
