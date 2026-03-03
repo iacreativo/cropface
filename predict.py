@@ -2,6 +2,7 @@ import os
 import json
 import shutil
 import mimetypes
+from PIL import Image
 from typing import List
 from cog import BasePredictor, Input, Path
 from comfyui import ComfyUI
@@ -31,12 +32,12 @@ class Predictor(BasePredictor):
             weights_to_download=["GFPGANv1.4.pth"],
         )
 
-    def filename_with_extension(self, input_file, prefix):
-        extension = os.path.splitext(input_file.name)[1]
-        return f"{prefix}{extension}"
-
     def handle_input_file(self, input_file: Path, filename: str = "image.png"):
-        shutil.copy(input_file, os.path.join(INPUT_DIR, filename))
+        target_path = os.path.join(INPUT_DIR, filename)
+        # Always save as PNG
+        img = Image.open(input_file)
+        img.save(target_path, "PNG")
+        print(f"[Cropface] Image saved as PNG: {filename}")
 
     def update_workflow(self, workflow, **kwargs):
         # Map input image to LoadImage node (2)
@@ -56,7 +57,8 @@ class Predictor(BasePredictor):
         image_filename = None
         if image:
             print(f"[Cropface] Processing image: {image}")
-            image_filename = self.filename_with_extension(image, "image")
+            # Always use image.png as filename
+            image_filename = "image.png"
             self.handle_input_file(image, image_filename)
             print(f"[Cropface] Image saved as: {image_filename}")
 

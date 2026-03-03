@@ -10,7 +10,7 @@ safetensors>=0.4.2
 aiohttp>=3.11.8
 accelerate>=1.1.1
 pyyaml
-Pillow
+Pillow>=10.0.0
 scipy
 tqdm
 psutil
