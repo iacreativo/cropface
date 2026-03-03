@@ -21,6 +21,9 @@ api_json_file = "workflow_api.json"
 
 class Predictor(BasePredictor):
     def setup(self):
+        # Setup custom node configurations
+        self._setup_custom_node_configs()
+
         self.comfyUI = ComfyUI("127.0.0.1:8188")
         self.comfyUI.start_server(OUTPUT_DIR, INPUT_DIR)
 
@@ -31,6 +34,18 @@ class Predictor(BasePredictor):
             workflow,
             weights_to_download=["GFPGANv1.4.pth"],
         )
+
+    def _setup_custom_node_configs(self):
+        config_files = {
+            "custom_node_configs/was_suite_config.json": "ComfyUI/custom_nodes/was-node-suite-comfyui/was_suite_config.json",
+            "custom_node_configs/rgthree_config.json": "ComfyUI/custom_nodes/rgthree-comfy/rgthree_config.json",
+            "custom_node_configs/comfy.settings.json": "ComfyUI/user/default/comfy.settings.json",
+        }
+        for src, dest in config_files.items():
+            if os.path.exists(src):
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                print(f"[Cropface] Copying {src} to {dest}")
+                shutil.copy(src, dest)
 
     def handle_input_file(self, input_file: Path, filename: str = "image.png"):
         target_path = os.path.join(INPUT_DIR, filename)
