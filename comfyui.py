@@ -61,6 +61,7 @@ class ComfyUI:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
+            cwd="/opt/ComfyUI"
         )
 
         def print_stdout():

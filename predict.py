@@ -11,7 +11,7 @@ from cog_model_helpers import seed as seed_helper
 
 OUTPUT_DIR = "/tmp/outputs"
 INPUT_DIR = "/tmp/inputs"
-COMFYUI_TEMP_OUTPUT_DIR = "ComfyUI/temp"
+COMFYUI_TEMP_OUTPUT_DIR = "/opt/ComfyUI/temp"
 ALL_DIRECTORIES = [OUTPUT_DIR, INPUT_DIR, COMFYUI_TEMP_OUTPUT_DIR]
 
 mimetypes.add_type("image/webp", ".webp")
