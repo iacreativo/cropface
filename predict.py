@@ -37,9 +37,9 @@ class Predictor(BasePredictor):
 
     def _setup_custom_node_configs(self):
         config_files = {
-            "custom_node_configs/was_suite_config.json": "ComfyUI/custom_nodes/was-node-suite-comfyui/was_suite_config.json",
-            "custom_node_configs/rgthree_config.json": "ComfyUI/custom_nodes/rgthree-comfy/rgthree_config.json",
-            "custom_node_configs/comfy.settings.json": "ComfyUI/user/default/comfy.settings.json",
+            "custom_node_configs/was_suite_config.json": "/opt/ComfyUI/custom_nodes/was-node-suite-comfyui/was_suite_config.json",
+            "custom_node_configs/rgthree_config.json": "/opt/ComfyUI/custom_nodes/rgthree-comfy/rgthree_config.json",
+            "custom_node_configs/comfy.settings.json": "/opt/ComfyUI/user/default/comfy.settings.json",
         }
         for src, dest in config_files.items():
             if os.path.exists(src):
