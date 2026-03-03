@@ -30,3 +30,27 @@ class ComfyUI_Reactor(CustomNodeHelper):
                     weights_to_download.append(
                         ComfyUI_Reactor.facedetection_weights[facedetection_model]
                     )
+
+    @staticmethod
+    def prepare(**kwargs):
+        print("[Reactor Helper] Running diagnostics...")
+        try:
+            import insightface
+            print(f"[Reactor Helper] insightface version: {insightface.__version__}")
+        except ImportError:
+            print("[Reactor Helper] ❌ insightface NOT FOUND")
+        
+        try:
+            import onnxruntime
+            print(f"[Reactor Helper] onnxruntime version: {onnxruntime.__version__}")
+            print(f"[Reactor Helper] onnxruntime providers: {onnxruntime.get_available_providers()}")
+        except ImportError:
+            print("[Reactor Helper] ❌ onnxruntime NOT FOUND")
+        
+        # Check if models directory exists
+        models_path = "/opt/ComfyUI/models/insightface"
+        if os.path.exists(models_path):
+            print(f"[Reactor Helper] Models directory exists: {models_path}")
+            print(f"[Reactor Helper] Contents: {os.listdir(models_path)}")
+        else:
+            print(f"[Reactor Helper] ❌ Models directory NOT FOUND: {models_path}")
