@@ -17,6 +17,7 @@ class ComfyUI_Reactor(CustomNodeHelper):
                 "ReActorLoadFaceModel",
                 "ReActorSaveFaceModel",
                 "ReActorFaceSwapOpt",
+                "ReActorRestoreFace",
             ]
         ):
             weights_to_download.append("models/buffalo_l")
