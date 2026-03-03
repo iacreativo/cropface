@@ -39,8 +39,8 @@ class ComfyUI:
         while not self.is_server_running():
             elapsed = time.time() - start_time
             print(f"[ComfyUI] Server not ready yet, waited {elapsed:.1f}s...")
-            if time.time() - start_time > 120:
-                raise TimeoutError("Server did not start within 120 seconds")
+            if time.time() - start_time > 180:
+                raise TimeoutError("Server did not start within 180 seconds")
             time.sleep(2)
 
         elapsed_time = time.time() - start_time
