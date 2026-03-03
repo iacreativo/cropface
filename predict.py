@@ -50,15 +50,19 @@ class Predictor(BasePredictor):
         output_quality: int = optimise_images.predict_output_quality(),
     ) -> List[Path]:
         """Ejecuta el workflow de ComfyUI para recorte y restauración facial"""
+        print("[Cropface] Starting prediction...")
         self.comfyUI.cleanup(ALL_DIRECTORIES)
 
         image_filename = None
         if image:
+            print(f"[Cropface] Processing image: {image}")
             image_filename = self.filename_with_extension(image, "image")
             self.handle_input_file(image, image_filename)
+            print(f"[Cropface] Image saved as: {image_filename}")
 
         with open(api_json_file, "r") as file:
             workflow = json.loads(file.read())
+        print(f"[Cropface] Workflow loaded, updating with image: {image_filename}")
 
         self.update_workflow(
             workflow,
@@ -66,9 +70,15 @@ class Predictor(BasePredictor):
         )
 
         wf = self.comfyUI.load_workflow(workflow)
+        print("[Cropface] Connecting to ComfyUI...")
         self.comfyUI.connect()
+        print("[Cropface] Running workflow...")
         self.comfyUI.run_workflow(wf)
+        print("[Cropface] Workflow completed, getting output files...")
+        
+        output_files = self.comfyUI.get_files(OUTPUT_DIR)
+        print(f"[Cropface] Output files: {output_files}")
 
         return [Path(p) for p in optimise_images.optimise_image_files(
-            output_format, output_quality, self.comfyUI.get_files(OUTPUT_DIR)
+            output_format, output_quality, output_files
         )]
