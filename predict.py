@@ -54,7 +54,7 @@ class Predictor(BasePredictor):
 
         image_filename = None
         if image:
-            image_filename = self.filename_with_extension(image, "input_img")
+            image_filename = self.filename_with_extension(image, "image")
             self.handle_input_file(image, image_filename)
 
         with open(api_json_file, "r") as file:
