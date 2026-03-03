@@ -23,22 +23,28 @@ class ComfyUI:
         self.server_address = server_address
 
     def start_server(self, output_directory, input_directory):
+        print("[ComfyUI] Starting server setup...")
         self.input_directory = input_directory
         self.output_directory = output_directory
+        print("[ComfyUI] Applying helper methods...")
         self.apply_helper_methods("prepare", weights_downloader=self.weights_downloader)
 
         start_time = time.time()
+        print("[ComfyUI] Starting server thread...")
         server_thread = threading.Thread(
             target=self.run_server, args=(output_directory, input_directory)
         )
         server_thread.start()
+        print("[ComfyUI] Waiting for server to be ready...")
         while not self.is_server_running():
-            if time.time() - start_time > 60:
-                raise TimeoutError("Server did not start within 60 seconds")
-            time.sleep(0.5)
+            elapsed = time.time() - start_time
+            print(f"[ComfyUI] Server not ready yet, waited {elapsed:.1f}s...")
+            if time.time() - start_time > 120:
+                raise TimeoutError("Server did not start within 120 seconds")
+            time.sleep(2)
 
         elapsed_time = time.time() - start_time
-        print(f"Server started in {elapsed_time:.2f} seconds")
+        print(f"[ComfyUI] Server started in {elapsed_time:.2f} seconds")
 
     def run_server(self, output_directory, input_directory):
         command = f"python ./ComfyUI/main.py --output-directory {output_directory} --input-directory {input_directory} --disable-metadata"
