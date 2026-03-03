@@ -195,9 +195,14 @@ class ComfyUI:
         print("====================================")
 
     def connect(self):
+        print("[ComfyUI] Connecting to WebSocket...")
         self.client_id = str(uuid.uuid4())
+        print(f"[ComfyUI] Client ID: {self.client_id}")
         self.ws = websocket.WebSocket()
-        self.ws.connect(f"ws://{self.server_address}/ws?clientId={self.client_id}")
+        ws_url = f"ws://{self.server_address}/ws?clientId={self.client_id}"
+        print(f"[ComfyUI] Connecting to: {ws_url}")
+        self.ws.connect(ws_url)
+        print("[ComfyUI] WebSocket connected!")
 
     def post_request(self, endpoint, data=None):
         url = f"http://{self.server_address}{endpoint}"
@@ -216,18 +221,23 @@ class ComfyUI:
         self.post_request("/interrupt")
 
     def queue_prompt(self, prompt):
+        print("[ComfyUI] queue_prompt called...")
         try:
             # Prompt is the loaded workflow (prompt is the label comfyUI uses)
             p = {"prompt": prompt, "client_id": self.client_id}
             data = json.dumps(p).encode("utf-8")
+            prompt_url = f"http://{self.server_address}/prompt?{self.client_id}"
+            print(f"[ComfyUI] Sending prompt to: {prompt_url}")
+            
             req = urllib.request.Request(
-                f"http://{self.server_address}/prompt?{self.client_id}", data=data
+                prompt_url, data=data
             )
-
+            print("[ComfyUI] Waiting for response...")
             output = json.loads(urllib.request.urlopen(req).read())
+            print(f"[ComfyUI] Prompt response: {output}")
             return output["prompt_id"]
         except urllib.error.HTTPError as e:
-            print(f"ComfyUI error: {e.code} {e.reason}")
+            print(f"ComfyUI HTTP error: {e.code} {e.reason}")
             http_error = True
 
         if http_error:
