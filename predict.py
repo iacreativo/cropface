@@ -71,8 +71,10 @@ class Predictor(BasePredictor):
             image_filename=image_filename,
         )
 
+        print(f"[Cropface] Full workflow: {json.dumps(workflow, indent=2)}")
+        
         wf = self.comfyUI.load_workflow(workflow)
-        print("[Cropface] Connecting to ComfyUI...")
+        print("[Cropface] Workflow loaded, connecting to ComfyUI...")
         self.comfyUI.connect()
         print("[Cropface] Running workflow...")
         self.comfyUI.run_workflow(wf)
