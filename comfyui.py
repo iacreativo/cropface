@@ -35,12 +35,15 @@ class ComfyUI:
             target=self.run_server, args=(output_directory, input_directory)
         )
         server_thread.start()
-        print("[ComfyUI] Waiting for server to be ready...")
+        
+        print("[ComfyUI] Waiting for server to become ready...")
         while not self.is_server_running():
             elapsed = time.time() - start_time
-            print(f"[ComfyUI] Server not ready yet, waited {elapsed:.1f}s...")
-            if time.time() - start_time > 180:
-                raise TimeoutError("Server did not start within 180 seconds")
+            if int(elapsed) % 10 == 0:
+                print(f"[ComfyUI] Server not ready yet... (waited {elapsed:.1f}s)")
+            
+            if elapsed > 300:
+                raise TimeoutError("Server did not start within 300 seconds")
             time.sleep(2)
 
         elapsed_time = time.time() - start_time
@@ -77,7 +80,7 @@ class ComfyUI:
     def is_server_running(self):
         try:
             with urllib.request.urlopen(
-                "http://{}/history/{}".format(self.server_address, "123")
+                "http://{}".format(self.server_address)
             ) as response:
                 return response.status == 200
         except URLError:
