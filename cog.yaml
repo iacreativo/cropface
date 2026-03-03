@@ -8,10 +8,13 @@ build:
     - libsm6
     - libxext6
     - git
+    - build-essential
+    - python3-dev
   python_version: "3.12"
   python_requirements: requirements.txt
   run:
     - curl -o /usr/local/bin/pget -L "https://github.com/replicate/pget/releases/latest/download/pget_$(uname -s)_$(uname -m)" && chmod +x /usr/local/bin/pget
+    - pip install --upgrade pip
     - pip install numpy cython
     - pip install onnxruntime-gpu --extra-index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/
     - pip install insightface==0.7.3
@@ -19,4 +22,3 @@ build:
     - cd /opt/ComfyUI/custom_nodes && git clone https://github.com/Gourieff/ComfyUI-ReActor.git && cd ComfyUI-ReActor && pip install -r requirements.txt
     - cd /opt/ComfyUI/custom_nodes && git clone https://github.com/hay86/ComfyUI_AceNodes.git
 predict: "predict.py:Predictor"
-train: "train.py:train"

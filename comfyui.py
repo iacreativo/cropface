@@ -192,6 +192,8 @@ class ComfyUI:
                                 missing_inputs.append(filename)
                             else:
                                 print(f"✅ {filename}")
+                                # Ensure we use the basename so ComfyUI finds it in its input dir
+                                node["inputs"][input_key] = os.path.basename(filename)
 
         if missing_inputs:
             raise Exception(f"Missing required input files: {', '.join(missing_inputs)}")
