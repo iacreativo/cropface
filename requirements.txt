@@ -68,3 +68,4 @@ alembic
 SQLAlchemy
 yarl>=1.18.0
 gguf
+comfy-aimdo
